@@ -1,5 +1,7 @@
 let _container;
 let _vnode;
+const states = [];
+let stateIndex = 0;
 
 /**
  * container에 element를 렌더링합니다.
@@ -16,6 +18,7 @@ export const render = (element, container) => {
  * 실제 dom을 렌더링합니다.
  */
 const _render = () => {
+  stateIndex = 0;
   _container.innerHTML = "";
   _container.appendChild(createDOM(_vnode));
 };
@@ -62,3 +65,19 @@ const createDOM = (vnode) => {
 
   return dom;
 };
+
+/**
+ * useState hook
+ * @param {any} initValue
+ * @returns {[any, (newValue: any) => void]}
+ */
+export const useState = (initValue) => {
+  const state = states[stateIndex] ?? initValue;
+  const _index = stateIndex;
+  const setState = (newValue) => {
+    states[_index] = newValue;
+    _render();
+  };
+  stateIndex++;
+  return [state, setState];
+}

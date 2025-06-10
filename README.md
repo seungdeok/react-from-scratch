@@ -166,3 +166,45 @@ import App from "./App";
 
 React.render(<App />, document.getElementById("app"));
 ```
+
+## useState
+states과 추적 포인터인 stateIndex를 두고 js 클로저를 활용해서 내부 상태관리를 위한 hook(useState)의 동작을 따라해보고자 합니다.
+
+### 간단한 counter app
+```jsx
+export default function App() {
+  const [count, setCount] = React.useState(0);
+  return (
+    <div>
+      <h1>Hello World</h1>
+      <button onClick={() => setCount(count + 1)}>+</button>
+      <p>{count}</p>
+      <button onClick={() => setCount(count - 1)}>-</button>
+    </div>
+  );
+}
+```
+
+```js
+const states = [];
+let stateIndex = 0;
+
+/**
+ * useState hook
+ * @param {any} initValue
+ * @returns {[any, (newValue: any) => void]}
+ */
+export const useState = (initValue) => {
+  const state = states[stateIndex] ?? initValue;
+  const _index = stateIndex;
+  const setState = (newValue) => {
+    states[_index] = newValue;
+    _render();
+  };
+  stateIndex++;
+  return [state, setState];
+}
+```
+
+### 구현 결과
+<img width="792" alt="preview" src="https://github.com/user-attachments/assets/94769c8a-4599-4870-adba-81e6ca16fc7c" />
