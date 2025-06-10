@@ -1,3 +1,4 @@
+import * as React from "./libs/react";
 import App from "./App";
 
-render(<App />, document.getElementById("app"));
+React.render(<App />, document.getElementById("app"));
