@@ -1,7 +1,3 @@
-export const TestComponent = () => {
-  return (
-    <div>
-      Hello <span>World</span>
-    </div>
-  );
-};
+import App from "./App";
+
+render(<App />, document.getElementById("app"));

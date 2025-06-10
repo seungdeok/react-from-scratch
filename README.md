@@ -33,3 +33,54 @@ export default defineConfig({
 3. localhost:5173 > src 폴더 > jsx파일
 
 <img width="792" alt="screenshot" src="https://github.com/user-attachments/assets/a1e73186-d2e5-4ba4-849f-3d6ccc9aa927" />
+
+
+## text element 변환 
+```jsx
+export default function App() {
+  return (
+    <div>
+      <h1>Hello World</h1>
+    </div>
+  );
+}
+```
+
+### 변환 결과 확인
+
+```json
+  // div는 children에 객체가 들어갑니다.
+  h("div", null, [h("h1", null, "Hello World"))]);
+  // h1의 경우 chilren에 text가 들어갑니다.
+  h("h1", null, "Hello World"))
+```
+
+### jsx 변환
+text의 경우에 임의로 포맷 통일(`createTextElement`)시켜주어 일관성있게 노출시킬 수 있도록 해보았습니다.
+
+```js
+function createTextElement(text) {
+  return {
+    type: "text",
+    props: {
+      textContent: text,
+    },
+    children: [],
+  };
+}
+
+export function h(type, props, ...children) {
+  console.log("h", type, props, children);
+  return {
+    type,
+    props,
+    children: children.map((child) => {
+      if (typeof child === "object") {
+        return child;
+      }
+
+      return createTextElement(child);
+    }),
+  };
+}
+```
